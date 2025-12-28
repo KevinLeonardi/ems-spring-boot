@@ -2,9 +2,11 @@ package com.example.ems.controller;
 
 import com.example.ems.dto.EmployeeDto;
 import com.example.ems.service.EmployeeService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,11 +29,22 @@ public class EmployeeController {
         EmployeeDto employeeDto = employeeService.getEmployee(id);
         return ResponseEntity.ok(employeeDto);
     }
+//    @GetMapping
+//    public ResponseEntity<List<EmployeeDto>> getEmployees(){
+//       List<EmployeeDto> employeeDtos = employeeService.getAllEmployees();
+//       return ResponseEntity.ok(employeeDtos);
+//    }
+
     @GetMapping
-    public ResponseEntity<List<EmployeeDto>> getEmployees(){
-       List<EmployeeDto> employeeDtos = employeeService.getAllEmployees();
-       return ResponseEntity.ok(employeeDtos);
+    public String getEmployees(HttpServletRequest request){
+        List<EmployeeDto> employeeDtos = employeeService.getAllEmployees();
+        return request.getSession().getId() + employeeDtos.toString();
     }
+    @GetMapping("/csrf-token")
+    public CsrfToken getCsrfToken(HttpServletRequest request) {
+        return (CsrfToken) request.getAttribute("_csrf");
+    }
+
     @PutMapping("{id}")
     public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable("id") Long id, @RequestBody EmployeeDto updateEmployeeDto){
         EmployeeDto employee = employeeService.updateEmployee(id, updateEmployeeDto);
