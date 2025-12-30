@@ -28,17 +28,17 @@ public class EmployeeController {
         EmployeeDto employeeDto = employeeService.getEmployee(id);
         return ResponseEntity.ok(employeeDto);
     }
-//    @GetMapping
-//    public ResponseEntity<List<EmployeeDto>> getEmployees(){
-//       List<EmployeeDto> employeeDtos = employeeService.getAllEmployees();
-//       return ResponseEntity.ok(employeeDtos);
-//    }
-
     @GetMapping
-    public String getEmployees(HttpServletRequest request){
-        List<EmployeeDto> employeeDtos = employeeService.getAllEmployees();
-        return request.getSession().getId() + employeeDtos.toString();
+    public ResponseEntity<List<EmployeeDto>> getEmployees(){
+       List<EmployeeDto> employeeDtos = employeeService.getAllEmployees();
+       return ResponseEntity.ok(employeeDtos);
     }
+
+//    @GetMapping
+//    public String getEmployees(HttpServletRequest request){
+//        List<EmployeeDto> employeeDtos = employeeService.getAllEmployees();
+//        return request.getSession().getId() + employeeDtos.toString();
+//    }
     @GetMapping("/csrf-token")
     public CsrfToken getCsrfToken(HttpServletRequest request) {
         return (CsrfToken) request.getAttribute("_csrf");
