@@ -15,4 +15,8 @@ public class AdminController {
     public Admins register(@RequestBody Admins admin){
         return service.register(admin);
     }
+    @PostMapping("/login")
+    public String login(@RequestBody Admins admin){
+        return service.verify(admin);
+    }
 }
